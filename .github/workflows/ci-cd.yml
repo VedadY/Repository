@@ -35,7 +35,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: vedady/devops-app:latest
+          tags: sepehrsharafi/devops-app:latest
 
       - name: deploy
         uses: appleboy/ssh-action@master
@@ -44,7 +44,8 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker stop devops-app
-            docker rm devops-app
+            # Check if the container exists and remove it if necessary
+            docker container ls -aq -f name=devops-app | xargs docker rm -f
+            
             docker pull docker.arvancloud.ir/${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
             docker run -d -p 8080 --name devops-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
