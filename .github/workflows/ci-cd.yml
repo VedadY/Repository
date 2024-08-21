@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -12,12 +11,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setups Nodejs
         uses: actions/setup-node@v4
         with:
           node-version: 14
 
-      - name: Setup dependencies
+      - name: Setup depenedncies
         run: npm install
 
       - name: Set up QEMU
@@ -36,16 +35,16 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
+          tags: sepehrsharafi/devops-app:latest
 
-      - name: Deploy
+      - name: deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: |
-            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
-            docker stop devops-app  true
-            docker rm devops-app  true
-            docker run -d -p 8080:8080 --name devops-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
+            docker stop devops-app
+            docker rm devops-app
+            docker pull docker.arvancloud.ir/${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
+            docker run -d -p 8080 --name devops-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
