@@ -47,4 +47,4 @@ jobs:
             docker stop devops-app
             docker rm devops-app
             docker pull docker.arvancloud.ir/${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
-            docker run -d -p 8080 --name devops-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
+            docker run -d -p 8080 --name devops-app docker.arvancloud.ir/${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
