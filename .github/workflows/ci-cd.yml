@@ -1,11 +1,10 @@
 name: ci-cd
+
 on:
   push:
     branches:
       - main
-
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -41,9 +40,9 @@ jobs:
       - name: deploy
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.HOST}}
-          username: ${{ secrets.USERNAME}}
-          password: ${{ secrets.PASSWORD}}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
           script: |
             docker pull docker.arvancloud.ir/${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
             docker run -d -p 8080 --name devops-app ${{ secrets.DOCKERHUB_USERNAME }}/devops-app:latest
